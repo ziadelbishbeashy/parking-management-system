@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-class vehicle
+class vehicle //parent class
 {
 protected :
 	string license;
@@ -22,7 +22,7 @@ public :
 	virtual void displayinfo() const;
 
 };
-class car : public vehicle {
+class car : public vehicle { // car inherited
 private :
 	bool iselectric;
 public :
@@ -32,7 +32,7 @@ public :
 	double operator*(double hours) const;
 };
 
-class bike : public vehicle {
+class bike : public vehicle { //bike inherited
 private:
 	bool biketype;
 public:
@@ -42,7 +42,7 @@ public:
 	double operator*(double hours) const;
 
 };
-class truck : public vehicle {
+class truck : public vehicle { //truck inherited
 private :
 	double loadcapacity;
 public :

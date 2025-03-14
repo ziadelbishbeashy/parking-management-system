@@ -34,6 +34,9 @@ void vehicle::displayinfo()const {
 car::car(string plate, string time, bool electric)
 	: vehicle(plate, time, "Car"), iselectric(electric) {
 }
+double car::operator*(double hours) const {
+	return calculatefees(hours);
+}
 double car::calculatefees(double hours)const {
 	double fee = hours * 15;
 	if (iselectric) {
@@ -49,12 +52,15 @@ void car::displaycarinfo() const {
 
 bike::bike(string plate, string time, bool type) 
 	: vehicle(plate, time, "Bike"){
-	bool biketype = false;
+	 biketype = type=false;
 }
 
 
 bool bike::isbicycle()const {
 	return biketype == true;
+}
+double bike::operator*(double hours) const {
+	return calculatefees(hours);
 }
 double bike::calculatefees(double hours)const {
 	double fee = hours * 8;
@@ -65,4 +71,14 @@ double bike::calculatefees(double hours)const {
 }
 truck::truck(string plate, string time, double load) : vehicle(plate, time, "truck") {
 	loadcapacity = load;
+}
+double truck::operator*(double hours) const {
+	return calculatefees(hours);
+}
+double truck::calculatefees(double hours)const {
+	return hours * 20 + (loadcapacity * 0.05);
+}
+void truck::displaytruckinfo()const {
+	displayinfo();
+	cout << "load capacity :" << loadcapacity << "Kg" << endl;
 }

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <chrono>
 using namespace std;
 void main() {
 	int choice;
@@ -47,4 +48,21 @@ void main() {
 
 
 	}
+
+ else if (choice == 3) {
+	 double load;
+	 cout << "Enter truck load capacity (kg): ";
+	 cin >> load;
+	 double hours;
+	 truck t(plate, time, load);
+	 cout << "Enter parked hours: ";
+	 cin >> hours;
+	 t.displayinfo();
+	 cout << "Total Fee: $" << t.calculatefees(hours)<< endl;
+
+	}
+ else {
+	 cout << "Invalid choice! Please restart the program.\n";
+	}
+
 }
