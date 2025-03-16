@@ -7,62 +7,70 @@ using namespace std;
 void main() {
 	int choice;
 	string plate, time;
-	cout << setw(15) << right << "welcome to our car parking system \n";
-	cout << setw(15) << right << "**************************************\n";
-	cout << "select vehicle type : (1 for car / 2 for bike / 3 truck ) \n";
-	cin >> choice;
-	cout << "enter license plate :";
-	cin >> plate;
-	cout << "enter entry time (HH::MM AM/PM) :";
-	cin >> time;
+	cout << setw(25) << right << "welcome to our car parking system \n";
+	cout << setw(25) << right << "**************************************\n";
+	vehicle* v =nullptr;
+	char continueChoice;
+	
+	do {
+		cout << "\nSelect vehicle type:\n";
+		cout << "1. Car\n";
+		cout << "2. Bike\n";
+		cout << "3. Truck\n";
+		cout << "4. Exit\n";
+		cout << "Enter choice: ";
+		cin >> choice;
+		cout << "enter license plate :";
+		cin >> plate;
+		cout << "enter entry time (HH::MM AM/PM) :";
+		cin >> time;
 
-	if (choice == 1) { //car
-		bool iselctric;
-		cout << "is the car electric (1 for yes , o for no) :";
-		cin >> iselctric;
-		car c(plate, time, iselctric);
-		c.displayinfo();
-		double hours;
-		cout << "enter parked hours :";
-		cin >> hours;
-		cout << "total fee :" << c.calculatefees(hours) << endl;
+		if (choice == 1) { //car
+			bool iselctric;
+			cout << "is the car electric (1 for yes , o for no) :";
+			cin >> iselctric;
+			v= new car(plate, time, iselctric);
+			
 
-	}
-	else if (choice == 2) {  // Bike
-		bool isBicycle;
-		cout << "Is it a bicycle? (1 for Yes, 0 for No): ";
-		cin >> isBicycle;
-		bike b(plate, time, isBicycle);
-		if (isBicycle == true) {
-			b.isbicycle();
+		}
+		else if (choice == 2) {  // Bike
+			bool isBicycle;
+			cout << "Is it a bicycle? (1 for Yes, 0 for No): ";
+			cin >> isBicycle;
+			v = new bike(plate, time, isBicycle);
+
 		}
 
-		cout << "\nBike Details:\n";
-		b.displayinfo();
-
+		else if (choice == 3) { //truck
+	
+			double load;
+			cout << "Enter truck load capacity (kg): ";
+			cin >> load;
+			v = new truck(plate, time, load);
+		}
+		else if (choice == 4) {
+			cout << "Exiting system. Thank you!\n";
+			break;
+		}
+		else {
+			cout << "Invalid choice! Please restart the program.\n";
+		}
+		cout << "\n vehicle entered\n ------------\n";
+		v->displayinfo();
+		cout << "status: parked hours\n\n";
 		double hours;
-		cout << "Enter parked hours: ";
+		cout << "enter parked hours:";
 		cin >> hours;
+		cout << "Total Fee: " << v->calculatefees(hours) << endl;
 
-		cout << "Total Fee: $" << b.calculatefees(hours) << endl;
+		cout << "\nDo you want to add another vehicle? (Y/N): ";
+		cin >> continueChoice;
 
-
+		delete v;
+	   
 	}
 
- else if (choice == 3) {
-	 double load;
-	 cout << "Enter truck load capacity (kg): ";
-	 cin >> load;
-	 double hours;
-	 truck t(plate, time, load);
-	 cout << "Enter parked hours: ";
-	 cin >> hours;
-	 t.displayinfo();
-	 cout << "Total Fee: $" << t.calculatefees(hours)<< endl;
+	while (continueChoice == 'Y' || continueChoice == 'y');
 
-	}
- else {
-	 cout << "Invalid choice! Please restart the program.\n";
-	}
-
+	cout << "\n thank you for using the parking system \n";
 }

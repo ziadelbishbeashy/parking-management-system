@@ -9,13 +9,20 @@ protected :
 	string license;
 	string entrytime;
 	string vehicletype;
+	int parkingid;
+	string status;
 public :
+	static int idcounter;
+	vehicle();
 	vehicle(string plate, string time, string type);
 	virtual ~vehicle();
 	string getlicense();
 	string getentry();
 	string gettype();
+	int getparkingid();
+	
 
+	void exitparking();
 	void setentry(string time);
 	virtual double calculatefees(double hours) const;
 

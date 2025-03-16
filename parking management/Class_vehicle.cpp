@@ -1,12 +1,27 @@
 #include "Class_vehicle.h"
+int vehicle::idcounter = 0;
+vehicle::vehicle() {
+	license = "UNKNOWN";
+	entrytime = "00:00";
+	vehicletype = "Unknown";
+	status = "parked";
+	parkingid = ++idcounter;
 
+}
 vehicle::vehicle(string plate, string time, string type) {
 	license = plate;
 	entrytime = time;
 	vehicletype = type;
+	status = "parked";
 }
 vehicle :: ~vehicle() {
 
+}
+int vehicle::getparkingid() {
+	return parkingid;
+}
+void vehicle::exitparking() {
+	status = "Exited";
 }
 string vehicle::getlicense() {
 	return license;
@@ -23,11 +38,13 @@ void vehicle::setentry(string time) {
 double vehicle::calculatefees(double hoursparked)const {
 	return hoursparked * 10.0;
 }
-void vehicle::displayinfo()const {
-	cout << "vehicle type :" << vehicletype << endl;
-	cout << "license plate :" << license << endl;
-	cout << "entry time :" << entrytime << endl;
 
+void vehicle::displayinfo() const {
+	cout << "Vehicle Type: " << vehicletype << endl;
+	cout << "License Plate: " << license << endl;
+	cout << "Entry Time: " << entrytime << endl;
+	cout << "Parking ID: " << parkingid << endl;
+	cout << "Status: " << status << endl;
 }
 
 
