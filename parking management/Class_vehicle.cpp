@@ -18,8 +18,8 @@ vehicle :: ~vehicle() {
 
 }
 int vehicle::getparkingid() {
-	return parkingid;
-}
+return parkingid;
+}	
 void vehicle::exitparking() {
 	status = "Exited";
 }
@@ -44,32 +44,33 @@ void vehicle::displayinfo() const {
 	cout << "License Plate: " << license << endl;
 	cout << "Entry Time: " << entrytime << endl;
 	cout << "Parking ID: " << parkingid << endl;
-	cout << "Status: " << status << endl;
+	
 }
 
 
 car::car(string plate, string time, bool electric)
 	: vehicle(plate, time, "Car"), iselectric(electric) {
+	parkingid = ++idcounter;
 }
 double car::operator*(double hours) const {
 	return calculatefees(hours);
 }
 double car::calculatefees(double hours)const {
-	double fee = hours * 15;
+	double fee =hours * 15;
 	if (iselectric) {
 		fee *= 0.8; 
 	}
 	return fee;
 }
 void car::displaycarinfo() const {
-	cout << "Car Type: " << vehicletype << endl;
-	cout << "License Plate: " << license << endl;
+	displayinfo();
 	cout << "Electric: " << (iselectric ? "Yes" : "No") << endl;
 }
 
 bike::bike(string plate, string time, bool type) 
-	: vehicle(plate, time, "Bike"){
-	 biketype = type=false;
+	: vehicle(plate, time, "Bike"),biketype(type){
+	parkingid = ++idcounter;
+	 
 }
 
 
@@ -88,6 +89,7 @@ double bike::calculatefees(double hours)const {
 }
 truck::truck(string plate, string time, double load) : vehicle(plate, time, "truck") {
 	loadcapacity = load;
+	parkingid = ++idcounter;
 }
 double truck::operator*(double hours) const {
 	return calculatefees(hours);
