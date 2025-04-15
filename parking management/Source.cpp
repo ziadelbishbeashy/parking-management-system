@@ -5,6 +5,13 @@
 #include <iomanip>
 #include <chrono>
 using namespace std;
+
+void continueWithAnyKey() {
+	cout << "\nPress any key to continue...";
+	cin.ignore();
+	cin.get();
+	system("cls");
+}
 void main() {
 	int choice;
 	cout << setw(25) << right << "welcome to our car parking system \n";
