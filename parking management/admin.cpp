@@ -2,7 +2,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "system.h"
+parkingsystem parking;
 using namespace std;
+
 bool adminexist() {
 	ifstream file("admin.txt");
 	return file.good();
@@ -73,6 +76,7 @@ void modifyfees() {
 
 	void adminchoices() {
 
+		
 
 		int choice;
 		do {
@@ -86,23 +90,32 @@ void modifyfees() {
 			cout << "7. return to main menu \n";
 			cin >> choice;
 			switch (choice) {
-				/*case 1 :
-					viewparked();
+				case 1 :
+					parking.viewAll();
+					//parking.continueWithAnyKey();
 					break;
 				case 2 :
-					addparking();
+					int slots;
+					cout << "enter number of parking slots to initialize : ";
+					cin >> slots;
+					parking.addslots(slots);
 					break;
 				case 3 :
-					removevehicle();
-					break;*/
-			 case 4:
+					int slotid;
+					cout << "enter slot id to remove vehicle:";
+					cin >> slotid;
+					parking.removeVehicle(slotid);
+					//parking.continueWithAnyKey();
+					break;
+			    case 4:
 				modifyfees();
 				break;
-				/*case 5 :
-					resetparking();*/
+				case 5 :
+					parking.reset();
+					
 			 case 6:
 				cout << "loging out \n";
-				break;
+				return;
 			case 7:
 				cout << "returning to main menu ...\n";
 				return;

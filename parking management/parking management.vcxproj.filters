@@ -42,5 +42,6 @@
   <ItemGroup>
     <Text Include="Fee.txt" />
     <Text Include="admin.txt" />
+    <Text Include="parking_data.txt" />
   </ItemGroup>
 </Project>

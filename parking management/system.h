@@ -1,7 +1,8 @@
 #ifndef system_H
 #define system_H
 #include "Class_vehicle.h"
-class system
+const int max_queue_size = 100;
+class parkingsystem
 {
 private:
     struct parkingSlot {
@@ -20,20 +21,25 @@ private:
     int stackTop;
 
 public:
-    system();
-    ~system();
+    parkingsystem();
+    ~parkingsystem();
     void initialize(int slots);
     bool parkVehicle(vehicle* v);
     bool removeVehicle(int slotID);
     void viewAll();
     void reset();
-
-    void pushUndo(vehicle* v);
-    vehicle* popUndo();
+   // int getotalslots();
+    void addslots(int extraslots);
+    void savesystem();
+    void loadsystem();
+   void pushUndo(vehicle* v);
+   // vehicle* popUndo();
     void enqueue(vehicle* v);
     vehicle* dequeue();
+    void viewqueue();
     bool isQueueEmpty();
-    bool isStackEmpty();
+  //  bool isStackEmpty();
+  
 };
 
 #endif

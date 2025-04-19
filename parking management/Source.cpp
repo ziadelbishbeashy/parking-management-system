@@ -4,15 +4,11 @@
 #include <string>
 #include <iomanip>
 #include <chrono>
+#include "system.h"
 using namespace std;
 
-void continueWithAnyKey() {
-	cout << "\nPress any key to continue...";
-	cin.ignore();
-	cin.get();
-	system("cls");
-}
-void main() {
+
+int main() {
 	int choice;
 	cout << setw(25) << right << "welcome to our car parking system \n";
 	cout << setw(25) << right << "**************************************\n";
@@ -36,5 +32,6 @@ void main() {
 
 		}
 	} while (choice != 3);
+	return 0;
 }
 	

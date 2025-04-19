@@ -1,5 +1,5 @@
 #include "Class_vehicle.h"
-int vehicle::idcounter = 0;
+#include <iostream>
 vehicle::vehicle() {
 	license = "UNKNOWN";
 	entrytime = "00:00";
@@ -17,6 +17,9 @@ vehicle::vehicle(string plate, string time, string type) {
 vehicle :: ~vehicle() {
 
 }
+int vehicle::idcounter = 0;  // Static member definition and initialization
+
+
 int vehicle::getparkingid() {
 return parkingid;
 }	
