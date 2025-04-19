@@ -131,16 +131,19 @@
     <ClCompile Include="Class_vehicle.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="system.cpp" />
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="admin.h" />
     <ClInclude Include="Class_vehicle.h" />
     <ClInclude Include="system.h" />
+    <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="admin.txt" />
     <Text Include="Fee.txt" />
     <Text Include="parking_data.txt" />
+    <Text Include="User.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

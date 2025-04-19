@@ -86,8 +86,9 @@ void modifyfees() {
 			cout << "3. remove vehicles \n";
 			cout << "4. modify parking fees \n";
 			cout << "5. reset parking slots \n";
-			cout << " 6. logout \n";
-			cout << "7. return to main menu \n";
+			cout << "6. undo last action \n";
+			cout << "7. logout \n";
+			cout << "8. exit \n";
 			cin >> choice;
 			switch (choice) {
 				case 1 :
@@ -108,19 +109,23 @@ void modifyfees() {
 					//parking.continueWithAnyKey();
 					break;
 			    case 4:
-				modifyfees();
-				break;
+					modifyfees();
+					break;
 				case 5 :
 					parking.reset();
+					break;
+				case 6 :
+					parking.undolastaction();
+					break;
 					
-			 case 6:
-				cout << "loging out \n";
+			    case 7:
+				    cout << "loging out \n";
 				return;
-			case 7:
-				cout << "returning to main menu ...\n";
-				return;
+			    case 8:
+					cout << "thanks for using our system \n";
+				break;
 			default:
-				cout << "invalid option. try again \n";
+					cout << "invalid option. try again \n";
 
 			}
 

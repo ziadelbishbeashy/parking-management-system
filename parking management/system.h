@@ -33,13 +33,13 @@ public:
     void savesystem();
     void loadsystem();
    void pushUndo(vehicle* v);
-   // vehicle* popUndo();
+   vehicle* popUndo();
     void enqueue(vehicle* v);
     vehicle* dequeue();
     void viewqueue();
     bool isQueueEmpty();
-  //  bool isStackEmpty();
-  
+    bool isStackEmpty();
+    void undolastaction();
 };
 
 #endif

@@ -69,6 +69,7 @@ bool parkingsystem::parkVehicle(vehicle* v) {
 			parking[i].occupied = true;
 			parkedCount++;
 			cout << "vehicle parked in slot " << (i + 1) << endl;
+			pushUndo(v); //add the parked vehicle to the stack
 			return true;
 		}
 	}
@@ -76,18 +77,27 @@ bool parkingsystem::parkVehicle(vehicle* v) {
 	return false;
 }
 bool parkingsystem::removeVehicle(int slotid) {
-	if (slotid < 1 || slotid >totalslots || !parking[slotid - 1].occupied) {
-		cout << "invalid or empty slots.\n";
+	if (slotid < 1 || slotid > totalslots || !parking[slotid - 1].occupied) {
+		cout << "Invalid or empty slot.\n";
 		return false;
 	}
+
+	// Save pointer before deleting for undo functionality
+	vehicle* removedVehicle = parking[slotid - 1].ptr;
+
+	// Push the removed vehicle to the undo stack
+	pushUndo(removedVehicle);
+
+	// Clean up memory and update state
 	delete parking[slotid - 1].ptr;
 	parking[slotid - 1].ptr = nullptr;
 	parking[slotid - 1].occupied = false;
 	parkedCount--;
 
-	cout << "vehicle removed from slot " << slotid << endl;
+	cout << "Vehicle removed from slot " << slotid << endl;
 	return true;
 }
+
 
 void parkingsystem::viewAll() {
 	cout << "\n==== Currently parked vehicles ====\n";
@@ -240,3 +250,42 @@ void parkingsystem::viewqueue() {
 	cout << "Total vehicles waiting: " << (queueRear - queueFront + max_queue_size) % max_queue_size << endl;
 }
 
+bool parkingsystem::isStackEmpty() {
+	return stackTop == -1; // the stack is empty
+}
+
+void parkingsystem::pushUndo(vehicle* v) {
+	if (stackTop < 99) {
+		undoStack[++stackTop] = v;  // Push vehicle onto the stack
+		cout << "Action has been added to the undo stack.\n";
+	}
+	else {
+		cout << "Undo stack is full.\n";
+	}
+}
+
+vehicle* parkingsystem::popUndo() {
+	if (!isStackEmpty()) {
+		vehicle* v = undoStack[stackTop--];  // Pop vehicle from the stack
+		cout << "Undo operation successful.\n";
+		return v;
+	}
+	cout << "Nothing to undo.\n";
+	return nullptr;  // Return nullptr if no action to undo
+}
+void parkingsystem::undolastaction() {
+	vehicle* v = popUndo();
+	if (v != nullptr) {
+		//if it was a removal , repark the vehicle in the first available slot 
+		for (int i = 0; i < totalslots; i++) {
+			if (!parking[i].occupied) {
+				parking[i].ptr = v;
+				parking[i].occupied = true;
+				parkedCount++;
+				cout << "vehicle reparked in slot " << i + 1 << endl;
+				return;
+			}
+		}
+		cout << "no available slots to undo the removal \n";
+	}
+}
