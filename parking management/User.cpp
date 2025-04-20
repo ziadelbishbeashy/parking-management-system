@@ -1,4 +1,4 @@
-#include "User.h"
+﻿#include "User.h"
 #include <iostream>
 #include"system.h"
 #include "Class_vehicle.h"
@@ -66,6 +66,7 @@ bool loginUser(string& loggedinusername) {
 void usermenu(parkingsystem& parking) {
     int choice;
     do {
+        system("cls");
         cout << "\n===== USER MENU =====\n";
         cout << "1. Park Vehicle\n";
         cout << "2. Remove Vehicle\n";
@@ -111,15 +112,59 @@ void usermenu(parkingsystem& parking) {
             }
             else {
                 cout << "Invalid vehicle type.\n";
-                break;
+                return;
             }
 
-            if (!parking.parkVehicle(v)) {
-                delete v;  // Clean up memory if not parked or queued
+
+            v->setlicense(plate);
+            v->input();
+
+            cout << "1. Park Now\n2. View Slots\nChoice: ";
+            int opt;
+            cin >> opt;
+
+            if (opt == 1) {
+                if (!parking.parkVehicle(v)) {
+                    cout << "No free slot. You are added to queue.\n";
+                }
             }
+            else if (opt == 2) {
+                parking.viewslots();
+            }
+        }
+        case 2:
+            int slot;
+            cout << "enter slot number to remove vehicle :";
+            cin >> slot;
+            parking.removeVehicle(slot);
             break;
+        case 3:
+            parking.viewslots(); // View slots
+            break;
+
+        case 4:
+            parking.undolastaction(); // Stack-based undo
+            break;
+
+        case 5:
+            parking.savesystem(); // Save
+            break;
+
+        case 6:
+            parking.loadsystem(); // Load
+            break;
+
+        case 7:
+            cout << "Exiting user menu...\n";
+            break;
+
+        default:
+            cout << "Invalid option. Try again.\n";
         }
 
-        }
-    } while (choice != 7);
-}
+        cout << "\nPress any key to continue...";
+        cin.ignore(); cin.get();
+
+
+        }while (choice != 7);
+    } 

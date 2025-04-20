@@ -4,14 +4,7 @@
 using namespace std;
 
 
-//void continueWithAnyKey() {
-//	cout << "\nPress any key to continue...";
-//	cin.ignore();
-//	cin.get();
-//	system("cls");
-//}
-
-parkingsystem::parkingsystem() {
+parkingsystem::parkingsystem(int cap) {
 	parking = nullptr;
 	totalslots = 0;
 	parkedCount = 0;
@@ -19,6 +12,11 @@ parkingsystem::parkingsystem() {
 	//queue initialization
 	queueFront = 0;
 	queueRear = -1;
+	queuesize = 20;
+	waitQueue = new vehicle * [queuesize];
+	for (int i = 0; i < queuesize; i++) {
+		waitQueue[i] = nullptr;
+	}
 
 	//stack initialization
 	stackTop = -1;
@@ -70,10 +68,13 @@ bool parkingsystem::parkVehicle(vehicle* v) {
 			parkedCount++;
 			cout << "vehicle parked in slot " << (i + 1) << endl;
 			pushUndo(v); //add the parked vehicle to the stack
+			savesystem();
 			return true;
 		}
 	}
+	
 	cout << " no available slots! \n";
+	enqueue(v);
 	return false;
 }
 bool parkingsystem::removeVehicle(int slotid) {
@@ -95,7 +96,19 @@ bool parkingsystem::removeVehicle(int slotid) {
 	parkedCount--;
 
 	cout << "Vehicle removed from slot " << slotid << endl;
+
+	if (!isQueueEmpty()) {
+		vehicle* next = dequeue();
+		parking[slotid - 1].ptr = next;
+		parking[slotid - 1].occupied = true;
+		parkedCount++;
+		cout << "Vehicle from queue with plate [" << next->getlicense() << "] parked in slot " << slotid << endl;
+		pushUndo(next);
+	}
+
+	savesystem();
 	return true;
+	
 }
 
 
@@ -127,8 +140,22 @@ void parkingsystem::reset() {
 	}
 	parkedCount = 0;
 	cout << "All parking slots have been cleared.\n";
-	//continueWithAnyKey();
+	savesystem();
 }
+//
+//void parkingsystem::viewslots() const {
+//	cout << "\n--- Parking Slots Status ---\n";
+//	for (int i = 0; i < capacity; ++i) {
+//		cout << "Slot " << i + 1 << ": ";
+//		if (parking[i] == nullptr) {
+//			cout << "Empty\n";
+//		}
+//		else {
+//			cout << "Occupied by vehicle with plate: " << parkingSlots[i]->getPlate() << "\n";
+//		}
+//	}
+//	cout << "-----------------------------\n";
+//}
 void parkingsystem::savesystem() {
 	ofstream file ("parking_data.txt");
 
@@ -207,13 +234,17 @@ bool parkingsystem::isQueueEmpty() {
 void parkingsystem::enqueue(vehicle* v) {
 	
 		// Check if the queue is full
-		if ((queueRear + 1) % max_queue_size == queueFront) {
+		if ((queueRear + 1) % max_queue_size == queueFront && queueRear != -1) {
 			cout << "Queue is full. Cannot enqueue vehicle.\n";
 			return;
 		}
-
-		// Circular increment for queueRear
-		queueRear = (queueRear + 1) % max_queue_size;
+		// If queue is empty
+		if (queueRear == -1) {
+			queueFront = queueRear = 0;
+		}
+		else {
+			queueRear = (queueRear + 1) % queuesize;
+		}
 		waitQueue[queueRear] = v;
         cout << "Vehicle with plate [" << v->getlicense() << "] added to waiting queue.\n";
 	
@@ -287,5 +318,19 @@ void parkingsystem::undolastaction() {
 			}
 		}
 		cout << "no available slots to undo the removal \n";
+	}
+	savesystem();
+}
+
+void parkingsystem::Viewqueue() {
+	cout << "\n===== Waiting Queue =====\n";
+	if (isQueueEmpty()) {
+		cout << "Queue is empty.\n";
+		return;
+	}
+	for (int i = queueFront; i <= queueRear; ++i) {
+		cout << "Queued Vehicle " << (i - queueFront + 1) << ": ";
+		waitQueue[i]->displayinfo();
+		cout << "---------------------\n";
 	}
 }

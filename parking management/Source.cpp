@@ -11,10 +11,12 @@ using namespace std;
 User u;
 
 int main() {
+	parking.loadsystem();
 	int choice;
 	cout << setw(25) << right << "welcome to our car parking system \n";
 	cout << setw(25) << right << "**************************************\n";
 	do {
+		
 		cout << "1.Admin login\n";
 		cout << "2.User mode \n";
 		cout << "3. Exit \n";
@@ -22,6 +24,7 @@ int main() {
 		switch (choice) {
 		case 1:
 			adminmenu();
+			
 			break;
 		case 2:
 		{

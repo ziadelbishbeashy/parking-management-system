@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include "system.h"
-parkingsystem parking;
+
 using namespace std;
 
 bool adminexist() {
@@ -74,70 +74,97 @@ void modifyfees() {
 }
 
 
-	void adminchoices() {
+void adminchoices() {
+	int choice;
 
+	// Initialize the choice to ensure the loop runs at least once
+	choice = 0;
+
+	while (choice != 8) {  // Loop continues until the user selects option 8 (exit)
 		
 
-		int choice;
-		do {
-			cout << "\n===== Admin Panel =====\n";
-			cout << "1.view parked vehicles \n";
-			cout << "2. add parking slots \n";
-			cout << "3. remove vehicles \n";
-			cout << "4. modify parking fees \n";
-			cout << "5. reset parking slots \n";
-			cout << "6. undo last action \n";
-			cout << "7. logout \n";
-			cout << "8. exit \n";
-			cin >> choice;
-			switch (choice) {
-				case 1 :
-					parking.viewAll();
-					//parking.continueWithAnyKey();
-					break;
-				case 2 :
-					int slots;
-					cout << "enter number of parking slots to initialize : ";
-					cin >> slots;
-					parking.addslots(slots);
-					break;
-				case 3 :
-					int slotid;
-					cout << "enter slot id to remove vehicle:";
-					cin >> slotid;
-					parking.removeVehicle(slotid);
-					//parking.continueWithAnyKey();
-					break;
-			    case 4:
-					modifyfees();
-					break;
-				case 5 :
-					parking.reset();
-					break;
-				case 6 :
-					parking.undolastaction();
-					break;
-					
-			    case 7:
-				    cout << "loging out \n";
-				return;
-			    case 8:
-					cout << "thanks for using our system \n";
-				break;
-			default:
-					cout << "invalid option. try again \n";
+		cout << "\n===== Admin Panel =====\n";
+		cout << "1. View parked vehicles\n";
+		cout << "2. Add parking slots\n";
+		cout << "3. Remove vehicles\n";
+		cout << "4. Modify parking fees\n";
+		cout << "5. Reset parking slots\n";
+		cout << "6. Undo last action\n";
+		cout << "7. save system to file \n";
+		cout << "8.load system from file \n";
+		cout << "9. view waiting queue \n";
+		cout << "10. Logout\n";
+		cout << "11. Exit\n";
+		cout << "Enter your choice: ";
+		cin >> choice;
 
-			}
-
-		} while (choice != 6);
-
+		switch (choice) {
+		case 1:
+			system("cls");
+			parking.viewAll();
+			break;
+		case 2:
+			system("cls");
+			int slots;
+			cout << "Enter number of parking slots to initialize: ";
+			cin >> slots;
+			parking.addslots(slots);
+			break;
+		case 3:
+			system("cls");
+			int slotid;
+			cout << "Enter slot id to remove vehicle: ";
+			cin >> slotid;
+			parking.removeVehicle(slotid);
+			// parking.continueWithAnyKey();
+			break;
+		case 4:
+			system("cls");
+			modifyfees();
+			break;
+		case 5:
+			system("cls");
+			parking.reset();
+			break;
+		case 6:
+			system("cls");
+			parking.undolastaction();
+			break;
+		case 7:
+			system("cls");
+			parking.savesystem();
+			break;
+		case 8 :
+			system("cls");
+			parking.loadsystem();
+			break;
+		case 9:
+			system("cls");
+			parking.viewqueue();
+			break;
+		case 10:
+			system("cls");
+			cout << "Logging out...\n";
+			return; // exit the function (logout)
+		case 11:
+			system("cls");
+			cout << "Thanks for using our system.\n";
+			break;
+		default:
+			system("cls");
+			cout << "Invalid option. Try again.\n";
+		}
 	}
+}
+
+	
 	void adminmenu() {
 		int x;
 		cout << "1.login:\n";
 		cout << "2. create admin account:\n";
 		cout << "enter ur choice :";
 		cin >> x; 
+		system("cls");
 		switch (x) {
 		case 1 :
 			if (adminlogin()) {

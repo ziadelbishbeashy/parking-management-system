@@ -104,3 +104,20 @@ void truck::displaytruckinfo()const {
 	displayinfo();
 	cout << "load capacity :" << loadcapacity << "Kg" << endl;
 }
+void vehicle:: setlicense(string p) { 
+	license = p;
+}
+void car::input() {
+	cout << "Is this an electric car? (1 = Yes, 0 = No): ";
+	cin >> iselectric;
+}
+
+void bike::input() {
+	cout << "is this an motorcyle (1 = yes , 0 = no): ";
+	cin >> biketype;
+}
+
+void truck::input() {
+	cout << "Enter load capacity (tons): ";
+	cin >> loadcapacity;
+}

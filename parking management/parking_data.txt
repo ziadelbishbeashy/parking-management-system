@@ -1,0 +1,4 @@
+car ABC123 09:00 1
+bike XYZ789 10:15 0
+truck TRK456 08:30 5.5
+car DEF234 11:45 0
