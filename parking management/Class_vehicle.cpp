@@ -43,10 +43,12 @@ double vehicle::calculatefees(double hoursparked)const {
 }
 
 void vehicle::displayinfo() const {
-	cout << "Vehicle Type: " << vehicletype << endl;
-	cout << "License Plate: " << license << endl;
-	cout << "Entry Time: " << entrytime << endl;
-	cout << "Parking ID: " << parkingid << endl;
+	if (this != nullptr) {
+		cout << "Vehicle Type: " << vehicletype << endl;
+		cout << "License Plate: " << license << endl;
+		cout << "Entry Time: " << entrytime << endl;
+		cout << "Parking ID: " << parkingid << endl;
+	}
 	
 }
 

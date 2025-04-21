@@ -28,6 +28,7 @@ int main() {
 			
 			break;
 		case 2:
+		
 		{
 			int opt;
 			cout << "1. Create User Account\n";
@@ -47,8 +48,8 @@ int main() {
 				}
 			}
 			break;
+
 		}
-			break;
 		case 3 :
 			cout << "exiting system \n";
 			break;

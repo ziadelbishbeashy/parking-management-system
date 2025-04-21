@@ -1,22 +1,24 @@
-﻿#include "system.h"
+﻿#include"system.h" ﻿
 #include <fstream>
 #include <iostream>
+
+
 using namespace std;
 
 
-parkingsystem::parkingsystem(){}
+parkingsystem::parkingsystem() {}
 parkingsystem::parkingsystem(int cap) {
 	parking = nullptr;
-	totalslots = cap > 0 ? cap :10;
+	totalslots = cap > 0 ? cap : 10;
 	parkedCount = 0;
-	
+
 
 	initialize(totalslots); //
 
 	//queue initialization
 	queueFront = 0;
 	queueRear = -1;
-	
+
 	waitQueue = new vehicle * [queuesize];
 	for (int i = 0; i < queuesize; i++) {
 		waitQueue[i] = nullptr;
@@ -46,7 +48,7 @@ void parkingsystem::addslots(int extraslots) {
 
 	//copy old parking data
 
-	for (int i = 0; i < totalslots && i<newtotal ; i++) {
+	for (int i = 0; i < totalslots && i < newtotal; i++) {
 		newparking[i] = parking[i];
 	}
 
@@ -100,29 +102,29 @@ void parkingsystem::parkVehicle(vehicle* v) {
 
 }
 bool parkingsystem::removeVehicle(int slotid) {
-	if (slotid < 1 || slotid > totalslots || !parking[slotid - 1].occupied) {
+	if (slotid < 1 || slotid > totalslots || !parking[slotid ].occupied) {
 		cout << "Invalid or empty slot.\n";
 		return false;
 	}
 
 	// Save pointer before deleting for undo functionality
-	vehicle* removedVehicle = parking[slotid - 1].ptr;
+	vehicle* removedVehicle = parking[slotid].ptr;
 
 	// Push the removed vehicle to the undo stack
 	pushUndo(removedVehicle);
 
 	// Clean up memory and update state
-	delete parking[slotid - 1].ptr;
-	parking[slotid - 1].ptr = nullptr;
-	parking[slotid - 1].occupied = false;
+	delete parking[slotid].ptr;
+	parking[slotid ].ptr = nullptr;
+	parking[slotid ].occupied = false;
 	parkedCount--;
 
 	cout << "Vehicle removed from slot " << slotid << endl;
 
 	if (!isQueueEmpty()) {
 		vehicle* next = dequeue();
-		parking[slotid - 1].ptr = next;
-		parking[slotid - 1].occupied = true;
+		parking[slotid ].ptr = next;
+		parking[slotid ].occupied = true;
 		parkedCount++;
 		cout << "Vehicle from queue with plate [" << next->getlicense() << "] parked in slot " << slotid << endl;
 		pushUndo(next);
@@ -130,7 +132,7 @@ bool parkingsystem::removeVehicle(int slotid) {
 
 	savesystem();
 	return true;
-	
+
 }
 
 
@@ -139,19 +141,22 @@ void parkingsystem::viewAll() {
 	bool found = false;
 
 	for (int i = 0; i < totalslots; i++) {
-		if (parking[i].occupied) {
-			cout << "Slot " << i + 1 << ":\n";
-			parking[i].ptr->displayinfo();
-			cout << "-----------------------\n";
-			found = true;
-
+		// Skip if slot is not occupied or vehicle pointer is null
+		if (!parking[i].occupied || parking[i].ptr == nullptr) {
+			continue;
 		}
+
+		cout << "Slot " << i + 1 << ":\n";
+		parking[i].ptr->displayinfo();
+		cout << "-----------------------\n";
+		found = true;
 	}
-	
+
 	if (!found) {
 		cout << "No vehicles parked currently.\n";
 	}
 }
+
 void parkingsystem::reset() {
 	// 1. Clear and delete parked vehicles
 	if (parking != nullptr) {
@@ -195,7 +200,7 @@ void parkingsystem::reset() {
 
 // function to save the current system state to file
 void parkingsystem::savesystem() {
-	ofstream file ("parking_data.txt");
+	ofstream file("parking_data.txt");
 
 	if (!file) {
 		cout << "error saving parking data \n";
@@ -207,14 +212,14 @@ void parkingsystem::savesystem() {
 	//save all parked vehicles with their slot index 
 
 	for (int i = 0; i < totalslots; i++) {
-		if (parking[i].occupied && parking[i].ptr != nullptr ) {
+		if (parking[i].occupied && parking[i].ptr != nullptr) {
 			file << i << " " << parking[i].ptr->gettype() << " " << parking[i].ptr->getlicense() << " " << parking[i].ptr->getentry() << endl;
-		  }
+		}
 	}
-	
+
 	file.close();
 	cout << "parking data saved\n";
-	
+
 }
 void parkingsystem::loadsystem() {
 	ifstream file("parking_data.txt");
@@ -263,10 +268,10 @@ void parkingsystem::loadsystem() {
 		}
 
 		// Place vehicle in correct slot if within valid range
-			parking[slotid].ptr = v;
-			parking[slotid].occupied = true;
-			parkedCount++;
-		
+		parking[slotid].ptr = v;
+		parking[slotid].occupied = true;
+		parkedCount++;
+
 	}
 
 	file.close(); // Always close the file when done
@@ -280,22 +285,22 @@ bool parkingsystem::isQueueEmpty() {
 
 
 void parkingsystem::enqueue(vehicle* v) {
-	
-		// Check if the queue is full
+
+	// Check if the queue is full
 	if ((queueRear + 1) % max_queue_size == queueFront && waitQueue[queueRear] != nullptr) {
-			cout << "Queue is full. Cannot enqueue vehicle.\n";
-			return;
-		}
-		// If queue is empty
-		if (queueRear == -1 && queueFront == 0) {
-			queueFront = queueRear = 0;
-		}
-		else {
-			queueRear = (queueRear + 1) % queuesize;
-		}
-		waitQueue[queueRear] = v;
-        cout << "Vehicle with plate [" << v->getlicense() << "] added to waiting queue.\n";
-	
+		cout << "Queue is full. Cannot enqueue vehicle.\n";
+		return;
+	}
+	// If queue is empty
+	if (queueRear == -1 && queueFront == 0) {
+		queueFront = queueRear = 0;
+	}
+	else {
+		queueRear = (queueRear + 1) % queuesize;
+	}
+	waitQueue[queueRear] = v;
+	cout << "Vehicle with plate [" << v->getlicense() << "] added to waiting queue.\n";
+
 
 }
 
@@ -335,13 +340,13 @@ void parkingsystem::viewqueue() {
 }
 
 bool parkingsystem::isStackEmpty() {
-	return stackTop == -1; // the stack is empty
+	return undotop == -1;  // Check if the undo stack is empty
 }
 
 void parkingsystem::pushUndo(vehicle* v) {
-	if (stackTop < 99) {
-		undotop++;
-		undoStack[undotop];  // Push vehicle onto the stack
+	if (undotop < 99) {
+		undotop++;  // Increment stack top
+		undoStack[undotop] = v;  // Push vehicle onto the stack
 		cout << "Action has been added to the undo stack.\n";
 	}
 	else {
@@ -351,30 +356,44 @@ void parkingsystem::pushUndo(vehicle* v) {
 
 vehicle* parkingsystem::popUndo() {
 	if (!isStackEmpty()) {
-		vehicle* v = undoStack[stackTop--];  // Pop vehicle from the stack
+		vehicle* v = undoStack[undotop--];  // Pop vehicle from the stack
 		cout << "Undo operation successful.\n";
 		return v;
 	}
 	cout << "Nothing to undo.\n";
 	return nullptr;  // Return nullptr if no action to undo
 }
+
 void parkingsystem::undolastaction() {
-	vehicle* v = popUndo();
+	vehicle* v = popUndo();  // Pop the last action from the undo stack
+
 	if (v != nullptr) {
-		//if it was a removal , repark the vehicle in the first available slot 
+		// If it was a removal, repark the vehicle in the first available slot
+		bool reparked = false;
 		for (int i = 0; i < totalslots; i++) {
 			if (!parking[i].occupied) {
 				parking[i].ptr = v;
 				parking[i].occupied = true;
 				parkedCount++;
-				cout << "vehicle reparked in slot " << i + 1 << endl;
-				return;
+				cout << "Vehicle reparked in slot " << i + 1 << endl;
+				reparked = true;
+				break;  // Exit loop once the vehicle is reparked
 			}
 		}
-		cout << "no available slots to undo the removal \n";
+
+		if (!reparked) {
+			cout << "No available slots to undo the removal.\n";
+		}
+
+		// Save the system state after re-parking the vehicle
+		savesystem();  // Call savesystem to save the current state to the file
 	}
-	savesystem();
+	else {
+		cout << "No action to undo.\n";
+	}
 }
+
+
 
 void parkingsystem::Viewqueue() {
 	cout << "\n===== Waiting Queue =====\n";
