@@ -8,6 +8,7 @@
 #include "User.h"
 using namespace std;
 
+parkingsystem parking;
 User u;
 
 int main() {

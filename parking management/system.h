@@ -5,26 +5,38 @@ const int max_queue_size = 100;
 class parkingsystem
 {
 private:
-    struct parkingSlot {
-        vehicle* ptr;
-        bool occupied;
+    struct parkingSlot  {
+        vehicle* ptr =nullptr;
+        bool occupied = false;
     };
+    struct action{
+        char type;      // 'p' = park , 'r' = remove , etc
+        vehicle* v;      //pointer to the vehicle
+        int postion;        //slot number
+      
+    };
+    action undostack[100];   // Stack of actions
+    int undotop = -1;        // Top index of undo stack
 
-    parkingSlot* parking;
-    int totalslots;
-    int parkedCount;
+    parkingSlot* parking =nullptr;
+    int totalslots = 0;
+    int parkedCount = 0;
 
-    vehicle** waitQueue;
-    int queueFront, queueRear,queuesize;
+    vehicle** waitQueue =nullptr ;
+    int queueFront = 0;
+    int queueRear = -1;
+   const int queuesize = max_queue_size;
 
-    vehicle* undoStack[100];
-    int stackTop;
-
+    vehicle* undoStack[100] = { nullptr };
+    int stackTop=-1;
+    
 public:
+  
+    parkingsystem();
     parkingsystem(int cap);
     ~parkingsystem();
     void initialize(int slots);
-    bool parkVehicle(vehicle* v);
+    void parkVehicle(vehicle* v);
     bool removeVehicle(int slotID);
     void viewAll();
     void reset();

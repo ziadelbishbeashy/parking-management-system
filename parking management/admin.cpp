@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include "system.h"
-
+ 
 using namespace std;
 
 bool adminexist() {
@@ -101,6 +101,7 @@ void adminchoices() {
 		switch (choice) {
 		case 1:
 			system("cls");
+			parking.loadsystem();
 			parking.viewAll();
 			break;
 		case 2:

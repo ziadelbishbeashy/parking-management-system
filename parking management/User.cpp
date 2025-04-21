@@ -93,21 +93,18 @@ void usermenu(parkingsystem& parking) {
             vehicle* v = nullptr;
 
             if (type == 1) {
-                bool isElectric;
-                cout << "Is the car electric? (1 for Yes, 0 for No): ";
-                cin >> isElectric;
+                bool isElectric=false;
+               
                 v = new car(plate, time, isElectric);
             }
             else if (type == 2) {
-                bool bikeType;
-                cout << "Enter Bike Type (e.g., sports, cruiser): ";
-                cin >> bikeType;
+                bool bikeType = false;
+               
                 v = new bike(plate, time, bikeType);
             }
             else if (type == 3) {
-                double capacity;
-                cout << "Enter Truck Load Capacity (tons): ";
-                cin >> capacity;
+                double capacity = 5.0;
+               
                 v = new truck(plate, time, capacity);
             }
             else {
@@ -124,13 +121,13 @@ void usermenu(parkingsystem& parking) {
             cin >> opt;
 
             if (opt == 1) {
-                if (!parking.parkVehicle(v)) {
-                    cout << "No free slot. You are added to queue.\n";
-                }
+                parking.parkVehicle(v);
+                
             }
             else if (opt == 2) {
-                parking.viewslots();
+              parking.viewslots();
             }
+            break;
         }
         case 2:
             int slot;
@@ -139,7 +136,7 @@ void usermenu(parkingsystem& parking) {
             parking.removeVehicle(slot);
             break;
         case 3:
-            parking.viewslots(); // View slots
+           parking.viewslots(); // View slots
             break;
 
         case 4:
@@ -166,5 +163,5 @@ void usermenu(parkingsystem& parking) {
         cin.ignore(); cin.get();
 
 
-        }while (choice != 7);
+        }  while (choice != 7);
     } 
